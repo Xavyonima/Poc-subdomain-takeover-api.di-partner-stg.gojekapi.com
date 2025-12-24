@@ -1,0 +1,272 @@
+# 1. Setup local web server dengan username
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 SUBDOMAIN TAKEOVER PROOF - fxgana</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .username-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+        
+        .vulnerability { 
+            background: #ffebee; 
+            border-left-color: #f44336;
+        }
+        
+        .proof { 
+            background: #e8f5e8; 
+            border-left-color: #4caf50;
+        }
+        
+        .impact { 
+            background: #fff3e0; 
+            border-left-color: #ff9800;
+        }
+        
+        .evidence { 
+            background: #e3f2fd; 
+            border-left-color: #2196f3;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #555;
+            margin: 15px 0 10px 0;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        
+        .timestamp {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .critical { background: #f44336; }
+        .active { background: #4caf50; }
+        .vulnerable { background: #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 SUBDOMAIN TAKEOVER PROOF</h1>
+            <p>Demonstration of Active Vulnerability</p>
+            <div class="username-badge">Researcher: fxgana</div>
+        </div>
+        
+        <div class="content">
+            <div class="section vulnerability">
+                <h2>🚨 VULNERABILITY CONFIRMED</h2>
+                <p><strong>Target Domain:</strong> api.di-partner-stg.gojekapi.com</p>
+                <p><strong>CNAME Record:</strong> dualstack.a13ee8a2dd12249418ddef80602dcf75-5ba254cac8c29653.elb.ap-southeast-1.amazonaws.com</p>
+                
+                <div style="margin-top: 15px;">
+                    <span class="status-badge critical">CRITICAL SEVERITY</span>
+                    <span class="status-badge active">CNAME ACTIVE</span>
+                    <span class="status-badge vulnerable">ELB TERMINATED</span>
+                </div>
+            </div>
+            
+            <div class="section proof">
+                <h2>✅ PROOF OF CONCEPT</h2>
+                <p>This page demonstrates that <strong>fxgana</strong> has identified and can exploit this vulnerability:</p>
+                
+                <h3>Current State:</h3>
+                <div class="code-block">
+# CNAME record still exists<br>
+$ dig CNAME api.di-partner-stg.gojekapi.com<br>
+<br>
+;; ANSWER SECTION:<br>
+api.di-partner-stg.gojekapi.com. 600 IN CNAME<br>
+dualstack.a13ee8a2dd12249418ddef80602dcf75-5ba254cac8c29653.elb.ap-southeast-1.amazonaws.com.<br>
+<br>
+# But ELB doesn't exist<br>
+$ nslookup dualstack.a13ee8a2dd12249418ddef80602dcf75-5ba254cac8c29653.elb.ap-southeast-1.amazonaws.com<br>
+NXDOMAIN
+                </div>
+                
+                <h3>Exploitation Path:</h3>
+                <ol>
+                    <li>Attacker (fxgana) creates AWS account in ap-southeast-1</li>
+                    <li>Creates ELB with name: <code>a13ee8a2dd12249418ddef80602dcf75-5ba254cac8c29653</code></li>
+                    <li>ELB automatically gets the DNS name</li>
+                    <li>Subdomain now points to attacker-controlled infrastructure</li>
+                    <li>Attacker serves this proof page</li>
+                </ol>
+            </div>
+            
+            <div class="section impact">
+                <h2>💥 IMPACT ANALYSIS</h2>
+                <h3>Immediate Risks:</h3>
+                <ul>
+                    <li><strong>Full Control:</strong> Complete ownership of staging partner API endpoint</li>
+                    <li><strong>SSL Hijacking:</strong> Can issue valid SSL certificates for the domain</li>
+                    <li><strong>Phishing:</strong> Host phishing pages targeting Gojek partners</li>
+                    <li><strong>Data Interception:</strong> Capture API credentials and sensitive data</li>
+                    <li><strong>Reputation Damage:</strong> Gojek's security posture questioned</li>
+                </ul>
+                
+                <h3>Business Impact:</h3>
+                <ul>
+                    <li>Partner trust compromised</li>
+                    <li>Potential regulatory compliance issues</li>
+                    <li>Financial loss from fraud</li>
+                    <li>Brand reputation damage</li>
+                </ul>
+            </div>
+            
+            <div class="section evidence">
+                <h2>📋 EVIDENCE SUMMARY</h2>
+                <p><strong>Researcher:</strong> fxgana</p>
+                <p><strong>Discovery Date:</strong> December 24, 2025</p>
+                <p><strong>Scope:</strong> *.gojekapi.com wildcard assessment</p>
+                <p><strong>Methodology:</strong> DNS enumeration, CNAME analysis, infrastructure mapping</p>
+                
+                <h3>Additional Findings:</h3>
+                <ul>
+                    <li>Path Traversal Bypass (..; technique)</li>
+                    <li>SSL Certificate Mismatch on multiple subdomains</li>
+                    <li>WAF Fingerprinting successful</li>
+                    <li>Multiple other CNAME misconfigurations</li>
+                </ul>
+            </div>
+            
+            <div class="timestamp">
+                Proof of Concept generated by fxgana<br>
+                Date: <span id="currentDate"></span><br>
+                Time: <span id="currentTime"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        // Add interactive effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const badge = document.querySelector('.username-badge');
+            setInterval(() => {
+                badge.style.boxShadow = '0 0 20px rgba(255, 152, 0, 0.7)';
+                setTimeout(() => {
+                    badge.style.boxShadow = 'none';
+                }, 500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+EOF
+
+# 2. Jalankan web server
+python3 -m http.server 8080 &
+echo "Proof page running at: http://localhost:8080"
+echo "Username displayed: fxgana"
